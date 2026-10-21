@@ -463,6 +463,11 @@ describe('<wa-textarea>', () => {
           textarea.wrap = 'off';
           el.value = Array.from({ length: 30 }, () => 'Long line '.repeat(30)).join('\n');
           await el.updateComplete;
+          await waitUntil(
+            () =>
+              textarea.scrollHeight - textarea.clientHeight >= 100 && textarea.scrollWidth - textarea.clientWidth >= 50,
+            'textarea did not lay out its scrollable content',
+          );
 
           el.scrollPosition({ top: 100, left: 50 });
           expect(textarea.scrollTop).to.equal(100);
