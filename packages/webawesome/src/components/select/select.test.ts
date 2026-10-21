@@ -137,6 +137,10 @@ describe('<wa-select>', () => {
 
             el.value = [];
             await el.updateComplete;
+            await waitUntil(
+              () => getComputedStyle(el.displayInput).opacity !== '0',
+              'selection count remained hidden after clearing the tags',
+            );
             expect(getComputedStyle(el.displayInput).opacity).to.not.equal('0');
             expect(el.displayInput.value).to.equal('');
           });
