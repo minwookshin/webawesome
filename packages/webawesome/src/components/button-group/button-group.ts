@@ -1,6 +1,6 @@
-import type { PropertyValues } from 'lit';
 import { html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { watch } from '../../internal/watch.js';
 import WebAwesomeElement from '../../internal/webawesome-element.js';
 import type WaButton from '../button/button.js';
 import styles from './button-group.styles.js';
@@ -34,10 +34,9 @@ export default class WaButtonGroup extends WebAwesomeElement {
   /** The button group's orientation. */
   @property({ reflect: true }) orientation: 'horizontal' | 'vertical' = 'horizontal';
 
-  willUpdate(changedProperties: PropertyValues<this>) {
-    super.willUpdate(changedProperties);
-
-    if (changedProperties.has('disableRole') || changedProperties.has('label')) {
+  @watch(['label', 'disableRole'])
+  handleLabelChange() {
+    if (this.internals) {
       this.internals.role = this.disableRole ? 'presentation' : 'group';
       this.internals.ariaLabel = this.disableRole ? null : this.label || null;
     }

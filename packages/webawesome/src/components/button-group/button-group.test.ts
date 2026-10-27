@@ -1,5 +1,6 @@
 import { elementUpdated, expect } from '@open-wc/testing';
 import { html } from 'lit';
+import sinon from 'sinon';
 import { fixtures } from '../../internal/test/fixture.js';
 import type WaButtonGroup from './button-group.js';
 
@@ -7,6 +8,28 @@ describe('<wa-button-group>', () => {
   for (const fixture of fixtures) {
     describe(`with "${fixture.type}" rendering`, () => {
       describe('accessibility', () => {
+        if (fixture.type === 'client-only') {
+          it('should render and update when element internals are unavailable', async () => {
+            const attachInternals = sinon.stub(HTMLElement.prototype, 'attachInternals').throws();
+            const consoleError = sinon.stub(console, 'error');
+
+            try {
+              const el = await fixture<WaButtonGroup>(html`
+                <wa-button-group label="Actions"><button>Action</button></wa-button-group>
+              `);
+
+              expect(el.shadowRoot!.querySelector('slot')).to.exist;
+              el.label = 'Updated';
+              el.disableRole = true;
+              await elementUpdated(el);
+              expect(el.shadowRoot!.querySelector('slot')!.assignedElements()).to.include(el.querySelector('button'));
+            } finally {
+              attachInternals.restore();
+              consoleError.restore();
+            }
+          });
+        }
+
         it('should pass accessibility tests', async () => {
           const el = await fixture<WaButtonGroup>(html`
             <wa-button-group label="Actions">
