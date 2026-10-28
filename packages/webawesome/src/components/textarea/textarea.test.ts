@@ -448,6 +448,11 @@ describe('<wa-textarea>', () => {
           const el = await fixture<WaTextarea>(html`<wa-textarea rows="2" resize="none"></wa-textarea>`);
           el.value = Array.from({ length: 30 }, (_, index) => `Line ${index + 1}`).join('\n');
           await el.updateComplete;
+          const textarea = el.shadowRoot!.querySelector('textarea')!;
+          await waitUntil(
+            () => textarea.scrollHeight - textarea.clientHeight >= 100,
+            'textarea did not lay out its scrollable content',
+          );
 
           expect(el.scrollPosition()).to.deep.equal({ top: 0, left: 0 });
           el.scrollPosition({ top: 100 });
