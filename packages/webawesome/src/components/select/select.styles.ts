@@ -129,7 +129,10 @@ export default css`
     }
   }
 
-  /* Manage spacing when tags are present */
+  /*
+   * Tags can be any content, so check for a non-empty container rather than wa-tag. has-selection forces a restyle
+   * when the selection changes, since WebKit doesn't re-evaluate :has(:not(:empty)) when tags are cleared.
+   */
   .select.multiple.has-selection {
     --_padding-with-tags: calc(var(--wa-form-control-height) * 0.1 - var(--wa-form-control-border-width));
 
