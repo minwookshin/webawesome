@@ -333,11 +333,11 @@ export default class WaRadioGroup extends WebAwesomeFormAssociatedElement {
     if (this.disabled) return;
 
     const radios = this.getAllRadios();
-    const checked = radios.find(radio => radio.checked);
+    const checked = radios.find(radio => radio.checked && !radio.disabled);
     const firstEnabledRadio = radios.find(radio => !radio.disabled);
     const radioToFocus = checked || firstEnabledRadio;
 
-    // Call focus for the checked radio. If no radio is checked, focus the first one that isn't disabled.
+    // Focus the checked radio if it's enabled, otherwise focus the first enabled radio.
     if (radioToFocus) {
       radioToFocus.focus(options);
     }

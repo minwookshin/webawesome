@@ -426,6 +426,25 @@ describe('<wa-radio-group>', () => {
               expect(validFocusHandler).to.have.been.called;
             });
 
+            it('should focus the first enabled radio when the checked radio is disabled', async () => {
+              const el = await fixture<WaRadioGroup>(html`
+                <wa-radio-group label="Select an option" value="0">
+                  <wa-radio value="0" disabled>Zero</wa-radio>
+                  <wa-radio value="1">One</wa-radio>
+                  <wa-radio value="2">Two</wa-radio>
+                </wa-radio-group>
+              `);
+              const radios = el.querySelectorAll<WaRadio>('wa-radio');
+
+              expect(radios[0].checked).to.be.true;
+              await doAction(el, actionType);
+
+              expect(document.activeElement).to.equal(radios[1]);
+              expect(el.value).to.equal('0');
+              expect(radios[0].checked).to.be.true;
+              expect(radios[1].checked).to.be.false;
+            });
+
             it('should focus the checked radio when the group receives focus', async () => {
               const el = await fixture<WaRadioGroup>(html`
                 <wa-radio-group value="2">
