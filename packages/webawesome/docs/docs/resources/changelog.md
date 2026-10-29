@@ -31,8 +31,17 @@ Web Awesome follows <a href="https://semver.org/" class="appearance-plain">Seman
 
 ## Unreleased
 
+:::added
+
+- Added the experimental `<wa-code-highlighter>` component for displaying syntax-highlighted code with a copy button
+  - Added `registerCodeGrammar()` for adding or replacing grammars
+
+:::
+
 :::fixed
 
+- Fixed a bug in `<wa-page>` and `<wa-tab-group>` where they did not render on first frame and their first render was delayed [pr:2932]
+- Fixed an issue where `disable-sticky` on `<wa-page>` was not documented. [pr:2932]
 - Fixed a regression in implicit form submission where pressing [[Enter]] submitted the form even when its submit button was disabled [pr:2861]
 - Fixed a bug in `animateWithClass` internal helper which could occasionally leave animations in indeterminate states. [pr:2870]
 - Fixed a bug in `<wa-copy-button>` where a missing `from` target copied the fallback `value` instead of stopping after `wa-error` [issue:2891] [pr:2911]
@@ -42,6 +51,11 @@ Web Awesome follows <a href="https://semver.org/" class="appearance-plain">Seman
 - Fixed a bug in `<wa-popup>` which could lead to possibly stale cleanup functions. [pr:2871]
 - Fixed a bug in `<wa-dropdown-item>` where dynamically added submenus would not trigger a `slotchange` event leading to `HasSlotController` reporting false. [pr:2868]
 - Fixed a bug in `<wa-tooltip>` where it would still open even when it was disabled. [pr:2869]
+- Fixed a bug in `<wa-switch>` where pressing an arrow key dispatched `change` and `input` events even when the switch was already in that position
+- Fixed a bug in `<wa-slider>` where steps were counted from zero instead of `min` [issue:2951]
+- Fixed a bug in `<wa-tree>` where nested items added in a single DOM mutation were not initialized until another change in the tree occurred
+- Fixed a performance issue in `<wa-tree>` where removing `lazy` from one item re-initialized all items in the tree causing slowness for trees with many items
+- Fixed a bug in `<wa-tree-item>` where the `expanded` attribute was ignored on nested items [issue:2792] [pr:2908]
 
 :::
 
